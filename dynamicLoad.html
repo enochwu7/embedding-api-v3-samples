@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dynamic Load</title>
-
+    <link rel="stylesheet" href="./main.css">
     <script type="module">
         // TableauEventType represents the type of Tableau embedding event that can be listened for.
         import { TableauEventType } from "https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.js";
@@ -49,14 +49,25 @@
 </head>
 
 <body>
-    <!-- Initialization of the Tableau visualization. -->
-    <div style="width:800px; height:700px;">
-        <tableau-viz id="tableauViz" hide-tabs></tableau-viz>
-    </div>
-    <!-- Buttons to show the previous or next visualization. -->
-    <div id="controls" style="padding:20px;">
-        <button style="width:100px;" id="previous">Previous</button>
-        <button style="width:100px;" id="next">Next</button>
+    <div class="viz-contain">
+
+      <h1>
+        Dynamic Loading with Tableau Visualizations
+      </h1>
+
+      <!-- Initialization of the Tableau visualization. -->
+      <div class="tableau-visual">
+          <tableau-viz id="tableauViz" hide-tabs></tableau-viz>
+      </div>
+
+      <!-- Buttons to show the previous or next visualization. -->
+      <div id="controls" class="nav-contain">
+        <div class="">
+          <button class="nav-btn" id="previous">Previous</button>
+          <button class="nav-btn" id="next">Next</button>
+        </div>
+      </div>
+
     </div>
 </body>
 

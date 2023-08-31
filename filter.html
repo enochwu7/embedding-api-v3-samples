@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Filter</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./main.css">
     <script type="module">
         // FilterUpdateType represents the different update types for applying a filter.
         // TableauEventType represents the type of Tableau embedding event that can be listened for.
         import { FilterUpdateType, TableauEventType } from "https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.js";
 
-        // Filter the viz based on the result from the dropdown selection.
+        // Year Filter Logic
         async function yearFilter(year) {
             let viz = document.getElementById("tableauViz");
             let sheet = viz.workbook.activeSheet;
-
+            console.log(sheet);
             if (year) {
                 await sheet.applyFilterAsync("Academic Year", [year], FilterUpdateType.Replace);
             } else {
@@ -22,29 +23,140 @@
             }
         }
 
+        // Year Dropdown Event Listener
         const dropdown = document.getElementById("changeYear");
-
-        // Add event handler to update the viz when a new dropdown value is selected.
         dropdown.addEventListener("change", (e) => yearFilter(e.target.value));
+
+        // Gender Filter Logic
+        async function genderFilter(gender) {
+            let viz = document.getElementById("tableauViz");
+            let sheet = viz.workbook.activeSheet;
+            console.log(sheet);
+            if (gender) {
+                await sheet.applyFilterAsync("Gender", [gender], FilterUpdateType.Replace);
+            } else {
+                await sheet.clearFilterAsync("Gender");
+            }
+        }
+
+        // Gender Dropdown Event Listener
+        const genderDropdown = document.getElementById("changeGender");
+        genderDropdown.addEventListener("change", (e) => genderFilter(e.target.value));
+
+        // College Filter Logic
+        async function collegeFilter(college) {
+            let viz = document.getElementById("tableauViz");
+            let sheet = viz.workbook.activeSheet;
+            console.log(sheet);
+            if (college) {
+                await sheet.applyFilterAsync("College", [college], FilterUpdateType.Replace);
+            } else {
+                await sheet.clearFilterAsync("College");
+            }
+        }
+
+        // College Dropdown Event Listener
+        // const collegeDropdown = document.getElementById("changeCollege");
+        // collegeDropdown.addEventListener("change", (e) => collegeFilter(e.target.value));
+
+        // Button Group Event Listener
+        const collegeGroup = document.getElementById("changeCollegeGroup");
+        collegeGroup.addEventListener("change", (e) => collegeFilter(e.target.value));
+
     </script>
 </head>
 
 <body>
-    <div style="width:800px; height:700px;overflow:auto;">
-        <!-- Initialization of the Tableau visualization. -->
-        <tableau-viz id="tableauViz" src="https://public.tableau.com/views/RegionalSampleWorkbook/College"
-            hide-tabs>
-            <viz-filter field="Academic Year" value="" />
-        </tableau-viz>
+    <div class="viz-contain">
+      <div class="nav-contain-whole">
+
+        <div class="header">
+          <h3>College Admissions</h3>
+          <p>Explore the distribution of SAT scores in different colleges.</p>
+        </div>
+
+        <div class="nav-containa">
+
+            <!-- College Dropdown. -->
+            <!-- <div class="form-floating">
+              <select class="form-select" id="changeCollege" aria-label="College">
+                <option value="" selected>All</option>
+                <option value="Arts & Sciences">Arts & Sciences</option>
+                <option value="Business">Business</option>
+                <option value="Communication">Communication</option>
+                <option value="Education">Education</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Music">Music</option>
+                <option value="Public Affairs">Public Affairs</option>
+                <option value="Public Health">Public Health</option>
+              </select>
+              <label for="floatingSelect">College</label>
+            </div> -->
+
+            <!-- Gender Dropdown -->
+            <div class="form-floating">
+              <select class="form-select" id="changeGender" aria-label="Gender">
+                <option value="" selected>All</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+              </select>
+              <label for="floatingSelect">Gender</label>
+            </div>
+
+            <!-- Academic Year Dropdown -->
+            <div class="form-floating">
+              <select class="form-select" id="changeYear" aria-label="Academic Year">
+                <option value="" selected>All</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+              </select>
+              <label for="floatingSelect">Academic Year</label>
+            </div>
+        </div>
+      </div>
+
+      <div class="tableau-visual">
+          <!-- Initialization of the Tableau visualization. -->
+          <tableau-viz id="tableauViz" src="https://public.tableau.com/views/RegionalSampleWorkbook/College?:embed=yes&:toolbar=no."
+              hide-tabs>
+              <viz-filter field="Academic Year" value="" />
+          </tableau-viz>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="btn-group" role="group" aria-label="College Group" id="changeCollegeGroup">
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="" checked>
+          <label class="btn btn-outline-secondary" for="btnradio1"><span class="legend">All</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="Arts & Sciences">
+          <label class="btn btn-outline-secondary" for="btnradio2"><span class="legend legend-as">&#9679; </span>Arts & Sciences</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="Business">
+          <label class="btn btn-outline-secondary" for="btnradio3"><span class="legend legend-bs">&#9679; </span>Business</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value="Communication">
+          <label class="btn btn-outline-secondary" for="btnradio4"><span class="legend legend-cm">&#9679; </span>Communication</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" value="Education">
+          <label class="btn btn-outline-secondary" for="btnradio5"><span class="legend legend-ed">&#9679; </span>Education</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off" value="Engineering">
+          <label class="btn btn-outline-secondary" for="btnradio6"><span class="legend legend-en">&#9679; </span>Engineering</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off" value="Music">
+          <label class="btn btn-outline-secondary" for="btnradio7"><span class="legend legend-mu">&#9679; </span>Music</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio8" autocomplete="off" value="Public Affairs">
+          <label class="btn btn-outline-secondary" for="btnradio8"><span class="legend legend-pa">&#9679; </span>Public Affairs</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio9" autocomplete="off" value="Public Health">
+          <label class="btn btn-outline-secondary" for="btnradio9"><span class="legend legend-ph">&#9679; </span>Public Health</label>
+        </div>
+
+      </div>
+
     </div>
-    <div style="padding:20px;">
-        <!-- Dropdown to select the year to filter by. -->
-        Year: <select id="changeYear">
-            <option value="">All</option>
-            <option value="2013">2013</option>
-            <option value="2014">2014</option>
-        </select>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 
 </html>
